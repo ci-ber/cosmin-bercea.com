@@ -1,29 +1,104 @@
 ---
 import { Image } from 'astro:assets'
-
 import SocialIcons from './SocialIcons.astro'
 
-
-const {fullName, title, institute, profilePicture} = Astro.props
+const { fullName, title, institute, profilePicture } = Astro.props
 ---
-<div class='flex-1'>
-  <h1 class='text-4xl font-bold mb-4'>
-    Welcome! I'm <span class='text-secondary'>{fullName}</span>
-  </h1>
-  <p class='text-xl text-gray-600 mb-4'>{title}{institute ? ` at ${institute}` : ''}</p>
-  <p class='text-lg mb-6'>
-    Brief impactful description of your research focus and academic mission.
-    Highlight your key contributions and areas of expertise.
-  </p>
-  <div class='flex gap-4'>
-    <SocialIcons />
+
+<section class="flex flex-col-reverse md:flex-row items-center gap-12 py-10">
+  <!-- Statement -->
+  <div class="flex-1 text-center md:text-left">
+    <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-base-content leading-tight max-w-3xl">
+      I develop generative AI to reason about the
+      <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
+        unseen
+      </span>
+      for early and rare pathology detection in large-scale medical imaging.
+    </h1>
+
+    <p class="mt-6 text-lg text-base-content/70 leading-relaxed max-w-2xl mx-auto md:mx-0">
+      My research focuses on <span class="font-semibold text-base-content">normative learning</span>,
+      <span class="font-semibold text-base-content"> anomaly detection</span>, and
+      <span class="font-semibold text-base-content"> multimodal clinical grounding</span>,
+      with an emphasis on interpretability and clinical trust.
+    </p>
+
+    <div class="mt-8 flex justify-center md:justify-start">
+      <SocialIcons />
+    </div>
   </div>
-</div>
-<div class='size-72 lg:block hidden'>
-  <!-- Add your profile image -->
-  <Image
-    src={profilePicture}
-    alt={fullName}
-    class='w-full h-full mask mask-circle size-44'
-  />
-</div>
+
+  <!-- Portrait + identity -->
+  <div class="flex flex-col items-center md:items-end">
+    <div class="relative group">
+      <!-- subtle premium ring -->
+      <div
+        class="absolute -inset-1 rounded-full bg-gradient-to-r from-primary/60 to-secondary/60 blur
+               opacity-20 group-hover:opacity-40 transition-opacity duration-500"
+        aria-hidden="true"
+      ></div>
+
+      <a
+        href="/cv"
+        class="relative block size-48 lg:size-56 overflow-hidden rounded-full
+               border border-base-300 bg-base-100 shadow-lg
+               transition-transform duration-500 group-hover:scale-[1.02]"
+        aria-label="Open CV"
+      >
+        <Image
+          src={profilePicture}
+          alt={fullName}
+          class="w-full h-full object-cover transition-all duration-700 grayscale-[12%] group-hover:grayscale-0"
+        />
+
+        <!-- Senior-style overlay: subtle, not loud -->
+        <div
+          class="absolute inset-0 flex items-end justify-center opacity-0 group-hover:opacity-100
+                 transition-opacity duration-300 pb-5"
+          aria-hidden="true"
+        >
+          <div
+            class="px-4 py-2 rounded-full bg-base-100/80 text-base-content backdrop-blur
+                   border border-base-300 shadow-sm"
+          >
+            <div class="text-[10px] font-black uppercase tracking-[0.22em] text-base-content/70">
+              View full
+            </div>
+            <div class="text-sm font-extrabold tracking-tight">
+              CV & Bio
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional: very gentle vignette so overlay reads on any photo -->
+        <div
+          class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                 bg-[radial-gradient(circle_at_bottom,_hsl(var(--b1)/0.0),_hsl(var(--b1)/0.35)_70%)]"
+          aria-hidden="true"
+        ></div>
+      </a>
+
+      <!-- quiet availability marker -->
+      <div
+        class="absolute bottom-4 right-4 w-3 h-3 bg-success rounded-full ring-4 ring-base-100 shadow"
+        aria-hidden="true"
+        title="Available for collaboration"
+      ></div>
+    </div>
+
+    <!-- Identity under image -->
+    <div class="mt-5 text-center md:text-right max-w-[18rem]">
+      <div class="text-base font-extrabold tracking-tight text-base-content">
+        {fullName}
+      </div>
+      <div class="mt-0.5 text-sm font-medium text-base-content/70">
+        {title}
+      </div>
+      {institute && (
+        <div class="mt-0.5 text-sm text-base-content/60">
+          {institute}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

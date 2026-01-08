@@ -1,0 +1,288 @@
+---
+import { nextGenData } from "@/data/nextgen";
+
+// Using your site's default theme variables
+const tierStyles = {
+  'top-tier': "badge badge-primary badge-outline font-black",
+  'mid-tier': "badge badge-ghost border-base-300 text-base-content/80 font-bold",
+  'workshop': "badge badge-ghost border-dashed border-base-300 text-base-content/60"
+};
+
+const awardIcons = {
+  'best-paper': { char: '★', label: 'Best Paper', class: 'animate-star text-amber-500' },
+  'most-cited': { char: '↗', label: 'Impact', class: 'animate-rising text-emerald-500' },
+  'early-accept': { char: '✓', label: 'Early Accept', class: 'text-blue-500 font-bold' },
+  'none': null
+};
+---
+
+<header class="mt-12">
+  <h2 class="text-xl font-black italic uppercase tracking-[0.25em] text-base-content/55">
+    {nextGenData.motto}
+  </h2>
+  <h3 class="text-[12px] font-black text-primary mb-3 uppercase tracking-[0.4em]">
+    Teaching and Supervision
+  </h3>
+</header>
+
+<section class="pb-12 bg-transparent overflow-x-hidden">
+  <div class="max-w-6xl mx-auto px-6 mb-2 mt-6">
+    <div class="mt-4 max-w-3xl text-sm leading-relaxed text-base-content/60">
+      <p>
+        As part of my involvement in the
+        <a
+          href="https://miccai-sb.github.io/index.html"
+          target="_blank"
+          rel="noreferrer"
+          class="font-semibold text-base-content/80 hover:text-primary transition-colors"
+        >
+          MICCAI Student Board
+        </a>,
+        where I serve as Scientific Events Officer, I have been able to initiate and support
+        student-focused activities within the medical imaging community, including leading
+        initiatives such as the
+        <a
+          href="https://miccaimsb.github.io/emerge/index.html"
+          target="_blank"
+          rel="noreferrer"
+          class="font-semibold text-base-content/80 hover:text-primary transition-colors"
+        >
+          EMERGE Workshop
+        </a>.
+      </p>
+
+      <p class="mt-4">
+        In parallel, I have been involved in teaching at the
+        <a
+          href="https://compai-lab.github.io/"
+          target="_blank"
+          rel="noreferrer"
+          class="font-semibold text-base-content/80 hover:text-primary transition-colors"
+        >
+          Technical University of Munich
+        </a>.
+        Since 2022, I have been leading graduate-level seminars on
+        <span class="font-semibold text-base-content/80">Anomaly Detection</span> and
+        <span class="font-semibold text-base-content/80">AI for Vision and Multimodal Learning</span>.
+        I have also contributed to the
+        <span class="font-semibold text-base-content/80">AI in Medicine</span>
+        course as a tutor since 2023, with primary responsibility for practical sessions and,
+        most recently, an invited lecture on generative models.
+      </p>
+
+      <p class="mt-4 italic text-base-content/50">
+        Selected student projects resulting from these teaching and mentoring activities are shown below.
+      </p>
+
+      <div class="mt-6 flex items-center gap-4">
+        <div class="h-px w-16 bg-base-300/80"></div>
+        <div class="text-[10px] font-black uppercase tracking-[0.35em] text-base-content/40">
+          Selected student outcomes
+        </div>
+        <div class="h-px flex-1 bg-base-300/80"></div>
+      </div>
+    </div>
+  </div>
+
+  {/* Premium legend + scroll hint */}
+  <div class="max-w-6xl mx-auto px-6 mt-6 mb-3 flex items-center justify-between gap-6">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] font-bold text-base-content/55">
+      <div class="inline-flex items-center gap-2">
+        <span class="animate-star text-amber-500">★</span>
+        <span>Best Paper</span>
+      </div>
+      <div class="inline-flex items-center gap-2">
+        <span class="animate-rising text-emerald-500">↗</span>
+        <span>Impact</span>
+      </div>
+      <div class="inline-flex items-center gap-2">
+        <span class="text-blue-500 font-black">✓</span>
+        <span>Early Accept</span>
+      </div>
+    </div>
+
+    <div class="hidden md:flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.28em] text-base-content/35">
+      <span>Scroll</span>
+      <span aria-hidden="true" class="opacity-70">→</span>
+    </div>
+  </div>
+
+  <div class="relative group/gallery">
+    {/* Premium horizontal scroll hint via edge fades */}
+    <div class="hfade">
+      <div class="flex gap-0 overflow-x-auto px-6 pb-10 snap-x no-scrollbar scroll-smooth overflow-y-visible">
+        {nextGenData.students.map((s) => {
+          const award = s.award ? awardIcons[s.award] : null;
+          return (
+            <div
+              class="flex-none w-[280px] snap-center group/card transition-transform duration-300"
+              data-award={s.award ?? "none"}
+            >
+              <div class="card-surface relative h-[320px] p-7 rounded-[2.25rem] border border-base-300/40 bg-base-100/55 backdrop-blur-md transition-all duration-300 overflow-hidden">
+
+                {/* Resting State: Name & Venue */}
+                <div class="h-full flex flex-col justify-between transition-all duration-300 group-hover/card:opacity-0 group-hover/card:scale-95 group-hover/card:-translate-y-3">
+                  <div>
+                    <div class="flex justify-between items-start mb-6">
+                      <span class:list={["badge-sm uppercase tracking-widest text-[11px]", tierStyles[s.tier]]}>
+                        {s.venue}
+                      </span>
+                      {award && (
+                        <span class:list={["text-xs", award.class]}>{award.char}</span>
+                      )}
+                    </div>
+
+                    <h4 class="text-2xl font-black text-base-content tracking-tighter leading-tight uppercase italic mb-2">
+                      {s.name}
+                    </h4>
+                    <div class="text-[13px] font-mono font-bold text-base-content/45 uppercase tracking-widest">
+                      {s.type}
+                    </div>
+                  </div>
+
+                  <div class="w-12 h-1 bg-primary/15 rounded-full"></div>
+                </div>
+
+                {/* Hover State: The "Dossier" Reveal */}
+                <div class="absolute inset-0 p-7 flex flex-col justify-center opacity-0 translate-y-6 group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-300 delay-75 pointer-events-none group-hover/card:pointer-events-auto">
+                  <div class="space-y-4">
+                    {award && (
+                      <div class:list={["text-[10px] font-black uppercase tracking-widest flex items-center gap-2", award.class]}>
+                        <span>{award.char}</span> {award.label}
+                      </div>
+                    )}
+
+                    <span class:list={["badge-sm uppercase tracking-widest text-[10px]", tierStyles[s.tier]]}>
+                      {s.venue}
+                    </span>
+
+                    <h4 class="text-xl font-black text-base-content tracking-tighter leading-tight uppercase italic mb-2">
+                      {s.name}
+                    </h4>
+
+                    <p class="text-sm leading-relaxed text-base-content/70 italic font-medium">
+                      "{s.topic}"
+                    </p>
+
+                    <div class="pt-4 border-t border-base-200/70 flex flex-col gap-3">
+                      {s.impactText && (
+                        <span class="text-[9px] font-black text-primary uppercase tracking-widest">{s.impactText}</span>
+                      )}
+                      {s.link && (
+                        <a
+                          href={s.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          class="inline-flex items-center gap-2 text-[10px] font-bold text-base-content uppercase tracking-widest hover:text-primary transition-colors"
+                        >
+                          Full Paper
+                          <svg class="w-2.5 h-2.5" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M1 11L11 1M11 1H1M11 1V11"/>
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          )
+        })}
+
+        <div class="flex-none w-24"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Premium left/right fades to indicate horizontal scroll */
+  .hfade {
+    position: relative;
+  }
+  .hfade::before,
+  .hfade::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 42px;
+    pointer-events: none;
+    z-index: 30;
+  }
+  .hfade::before {
+    left: 0;
+    background: linear-gradient(to right, hsl(var(--b1) / 1), hsl(var(--b1) / 0));
+  }
+  .hfade::after {
+    right: 0;
+    background: linear-gradient(to left, hsl(var(--b1) / 1), hsl(var(--b1) / 0));
+  }
+
+  @keyframes star-glow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.06); opacity: 0.85; }
+  }
+  .animate-star { display: inline-block; animation: star-glow 1.8s infinite ease-in-out; }
+
+  @keyframes arrow-rising {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(2px, -2px); }
+  }
+  .animate-rising { display: inline-block; animation: arrow-rising 1.6s infinite ease-in-out; }
+
+  /* Baseline for cards (default state) */
+  .group\/card {
+    transform: scale(0.76);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 240ms ease;
+    transform-origin: center;
+    will-change: transform;
+  }
+
+  /* Award color mapping (used for border tint + glow) */
+  .group\/card { --award: transparent; }
+  .group\/card[data-award="best-paper"] { --award: 45 95% 55%; }      /* gold */
+  .group\/card[data-award="most-cited"] { --award: 160 70% 45%; }     /* emerald */
+  .group\/card[data-award="early-accept"] { --award: 210 90% 60%; }   /* blue */
+
+  /* Subtle default tint if the card has an award */
+  .group\/card[data-award]:not([data-award="none"]) .card-surface {
+    border-color: hsl(var(--award) / 0.35);
+  }
+
+  /* Focus effect (hovering anywhere in gallery) */
+  .group\/gallery:hover .group\/card:not(:hover) {
+    opacity: 0.62;
+    transform: scale(0.73);
+  }
+
+  .group\/gallery:hover .group\/card:hover {
+    opacity: 1;
+    transform: scale(0.92);
+    z-index: 20;
+    position: relative;
+  }
+
+  /* Elegant award-colored hover glow (only if award exists) */
+  .group\/gallery:hover .group\/card:hover[data-award]:not([data-award="none"]) .card-surface {
+    box-shadow:
+      0 18px 50px -24px hsl(0 0% 0% / 0.35),
+      0 0 0 1px hsl(var(--award) / 0.35),
+      0 10px 30px -20px hsl(var(--award) / 0.35);
+  }
+
+  /* Non-award hover: clean depth without color */
+  .group\/gallery:hover .group\/card:hover[data-award="none"] .card-surface {
+    box-shadow: 0 18px 50px -24px hsl(0 0% 0% / 0.35);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-star, .animate-rising { animation: none !important; }
+    .group\/card { transition: none !important; }
+    .card-surface { transition: none !important; }
+  }
+</style>

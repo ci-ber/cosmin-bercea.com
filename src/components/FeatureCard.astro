@@ -1,0 +1,35 @@
+---
+// This is the "Frontmatter" where we define the inputs (props)
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  colorClass: string; // e.g., 'blue', 'purple', 'emerald'
+}
+
+const { title, description, href, colorClass } = Astro.js;
+
+// Mapping colors to Tailwind classes
+const colorStyles = {
+  blue: "hover:border-blue-500 group-hover:text-blue-600 bg-blue-50",
+  purple: "hover:border-purple-500 group-hover:text-purple-600 bg-purple-50",
+  emerald: "hover:border-emerald-500 group-hover:text-emerald-600 bg-emerald-50",
+};
+
+const selectedColor = colorStyles[colorClass as keyof typeof colorStyles];
+---
+
+<a href={href} class={`group relative p-8 rounded-2xl border border-slate-200 bg-white shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden ${selectedColor.split(' ')[0]}`}>
+    <div class={`absolute -right-4 -top-4 w-24 h-24 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-30 ${selectedColor.split(' ').pop()}`}></div>
+    
+    <div class={`relative mb-4 text-slate-400 transition-all duration-300 group-hover:scale-110 ${selectedColor.split(' ')[1]}`}>
+        <slot name="icon" />
+    </div>
+    
+    <h3 class={`relative text-xl font-bold mb-2 transition-colors ${selectedColor.split(' ')[1]}`}>
+        {title}
+    </h3>
+    <p class="relative text-slate-500 text-sm leading-relaxed">
+        {description}
+    </p>
+</a>

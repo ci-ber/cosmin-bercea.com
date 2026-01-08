@@ -7,31 +7,54 @@ import ProfilePictures from '@/assets/profile_pictures.jpg'
 import Hero from '@/components/ui/Hero.astro'
 import Grid from '@/components/ui/Grid.astro'
 import ArticleList from '@/components/ui/ArticleList.astro'
+import NewsScroll from '@/components/ui/NewsScroll.astro'
+import SelectedContributions from '@/components/ui/SelectedContributions.astro'
+import NextGen from '@/components/ui/NextGen.astro'
+import { selectedContributions } from '@/data/contributions'
+
 
 const { fullName, title, institute, research_areas } = profile
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<!-- Hero Section -->
-	<section class='flex items-center gap-12 border-b pb-12'>
-		<Hero
-			fullName={fullName}
-			title={title}
-			institute={institute}
-			profilePicture={ProfilePictures}
+  <section class="flex items-center gap-12 border-b border-base-200 pb-4 mb-2">
+    <Hero
+      fullName={fullName}
+      title={title}
+      institute={institute}
+      profilePicture={ProfilePictures}
+    />
+  </section>
+
+  <!-- News (dominant) + Research (sidebar) -->
+  <section class="mb-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pb-4 mb-2">
+      <!-- LEFT: News (3/4 width) -->
+      <div class="lg:col-span-9">
+        <NewsScroll title="Recent" maxHeightClass="max-h-[24rem]" limit={80} />
+      </div>
+
+      <!-- RIGHT: Research (1/4 width) -->
+      <div class="lg:col-span-3 lg:sticky lg:top-24">
+        <Grid
+			gridTitle="Research Areas"
+			gridItems={research_areas}
+			compact={true}
+			maxHeightClass="max-h-56"
 		/>
-	</section>
+      </div>
+    </div>
+  </section>
 
-	<!-- Research Areas -->
-	<section class='py-12 border-b'>
-		<Grid gridTitle='Research Areas' gridItems={research_areas} />
-	</section>
+  <SelectedContributions items={selectedContributions} />
+  <section class="py-12 border-t border-base-200">
+  <NextGen/>
+  </section>
 
-	<!-- Recent Publications -->
-	<section class='py-12 border-t'>
-		<ArticleList listTitle='Recent Publications' listItems={publications} />
-	</section>
+  <!-- <section class="py-12 border-t border-base-200">
+    <ArticleList
+      listTitle="Recent Publications"
+      listItems={publications}
+    />
+  </section> -->
 </Layout>

@@ -1,89 +1,207 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import { experiences, education, skills, publications } from '../data/cv'
+import { experiences, education, publications, patents, awards, service, teaching } from '../data/cv'
 import CvTimeline from '@/components/ui/CvTimeline.astro'
-
-import type { Experience, Education, Publication } from '../types/cv'
-import List from '@/components/ui/List.astro'
 import PublicationsList from '@/components/ui/PublicationsList.astro'
 
-let orderedExperiences: Experience[] = []
-let orderedEducations: Education[] = []
-let orderedPublications: Publication[] = []
-
-const orderElement = <T extends { time: string }>(a: T, b: T) => {
+const orderElement = (a: any, b: any) => {
   const presentValues = ['present', 'now', 'current', 'today']
-  if (
-			presentValues.includes(
-				(a['time'] as string)?.split(' - ')[1]?.toLowerCase()
-			)
-		) {
-			// If the date is 'present', it should be the first element
-			return -1
-		}
-		const dateA = new Date((a['time'] as string)?.split(' - ')[1])
-		const dateB = new Date((b['time'] as string)?.split(' - ')[1])
-		return dateB.getTime() - dateA.getTime()
+  const timeA = (a.time || '').split(' - ')[1]?.toLowerCase()
+  const timeB = (b.time || '').split(' - ')[1]?.toLowerCase()
+  if (presentValues.includes(timeA)) return -1
+  if (presentValues.includes(timeB)) return 1
+  return (
+    new Date(b.time?.split(' - ')[1] || b.time).getTime() -
+    new Date(a.time?.split(' - ')[1] || a.time).getTime()
+  )
 }
 
-if (experiences.length > 0) {
-	orderedExperiences = experiences.sort((a, b) => {
-		return orderElement(a, b)
-	})
-}
-
-if (education.length > 0) {
-	orderedEducations = education.sort((a, b) => {
-		return orderElement(a, b)
-	})
-}
-
-if (publications.length > 0) {
-	orderedPublications = publications.sort((a, b) => {
-		return orderElement(a, b)
-	})
-}
+const orderedExperiences = [...experiences].sort(orderElement)
+const orderedEducation = [...education].sort(orderElement)
 ---
 
 <Layout>
-	{
-		orderedEducations.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Education
-				</h2>
-				<CvTimeline elements={orderedEducations} colored={true} />
-			</section>
-		)
-	}
+  <!-- Theme-aware background wash -->
+  <div
+    class="fixed inset-0 -z-10
+           bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))]
+           from-primary/10 via-base-100 to-base-100 transition-colors duration-500"
+  ></div>
 
-	{
-		orderedExperiences.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Experiences
-				</h2>
-				<CvTimeline elements={orderedExperiences} colored={true} />
-			</section>
-		)
-	}
+  <div class="max-w-5xl mx-auto py-24 px-6 text-base-content">
+    <header class="mb-24 flex flex-col md:flex-row justify-between items-end gap-8 relative">
+      <div class="space-y-2 relative">
+        <h1 class="text-9xl font-black tracking-tighter italic uppercase opacity-[0.06]
+                   absolute -top-16 -left-6 pointer-events-none select-none text-base-content">
+          BERCEA
+        </h1>
 
-	{
-		orderedPublications.length > 0 && (
-			<section class='mb-12'>
-				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
-					Last publications
-				</h2>
-				<PublicationsList elements={orderedPublications}/>
-			</section>
-		)
-	}
+        <h2 class="text-6xl font-black tracking-tight relative text-base-content">
+          Curriculum <span class="text-primary">Vitae</span>
+        </h2>
 
-	{
-		skills.length > 0 && (
-			<section class='mb-12'>
-				<List listTitle='Skills' listItems={skills}/>
-			</section>
-		)
-	}
+        <p class="text-lg text-base-content/60 font-medium">
+          Postdoctoral Researcher @ TUM • AI & Medical Imaging
+        </p>
+      </div>
+
+      <a
+        href="media/files/cv_cosmin_bercea_2026.pdf"
+        class="px-8 py-4 rounded-full font-bold flex items-center gap-2
+               bg-base-content text-base-100 hover:scale-105 transition-all shadow-xl"
+      >
+        Download PDF <span class="text-xs">↓</span>
+      </a>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+      <!-- Awards -->
+      <section class="space-y-6">
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-primary flex items-center gap-4">
+          Honors & Awards <span class="h-px flex-1 bg-base-200"></span>
+        </h2>
+
+        <div class="grid gap-4">
+          {awards.map((award) => (
+            <div class="group relative overflow-hidden rounded-[2.5rem] border border-base-200 bg-base-100/70 backdrop-blur p-8 transition-all
+                        hover:border-primary/40 hover:shadow-lg">
+              <div class="transition-all duration-500 group-hover:blur-md group-hover:opacity-10 group-hover:scale-95">
+                <span class="text-[10px] font-black text-primary uppercase tracking-widest">
+                  {award.time}
+                </span>
+                <h3 class="text-xl font-bold mt-2 text-base-content">{award.title}</h3>
+                <p class="text-sm text-base-content/60 italic mt-1">{award.institute}</p>
+              </div>
+
+              <div class="absolute inset-0 flex items-center justify-center p-8 text-center opacity-0 transition-all duration-500
+                          group-hover:opacity-100 translate-y-4 group-hover:translate-y-0">
+                <p class="text-sm font-bold text-base-content/80 leading-relaxed italic">
+                  "{award.description}"
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Service -->
+      <section class="space-y-6">
+        <h2 class="text-xs font-black uppercase tracking-[0.4em] text-base-content/50 flex items-center gap-4">
+          Academic Service <span class="h-px flex-1 bg-base-200"></span>
+        </h2>
+
+        <div class="grid grid-cols-2 gap-4">
+          {service.map((s) => (
+            <div
+              class="group relative overflow-hidden rounded-3xl border border-base-200 bg-base-100/60 backdrop-blur-md p-6 transition-all
+                     hover:bg-primary hover:border-primary/40"
+            >
+              <div class="transition-all duration-300 group-hover:blur-sm group-hover:opacity-10">
+                <div class="text-[9px] font-bold text-base-content/50 mb-2">{s.period}</div>
+                <h3 class="text-xs font-bold text-base-content leading-tight">{s.role}</h3>
+                <p class="text-[10px] text-base-content/60 mt-1">{s.org}</p>
+              </div>
+
+              <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-all p-4">
+                <span class="text-[9px] text-primary-content/80 font-black uppercase tracking-widest mb-2">
+                  Venue Impact
+                </span>
+                <p class="text-primary-content text-[10px] text-center font-medium leading-relaxed">
+                  {s.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+
+    <!-- Teaching -->
+    <section class="mb-24">
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-base-content/50 mb-10 flex items-center gap-4">
+        Leadership & Teaching <span class="h-px flex-1 bg-base-200"></span>
+      </h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {teaching.map((t) => (
+          <div class="p-6 rounded-2xl bg-base-100 border border-base-200 hover:border-primary/40 hover:shadow-md transition-all">
+            <div class="text-[9px] font-bold text-primary uppercase tracking-widest mb-2">{t.role}</div>
+            <h3 class="font-bold text-base-content text-[11px] leading-tight">{t.org}</h3>
+            <p class="text-[10px] text-base-content/60 mt-2 italic">{t.period}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Publications -->
+    <section class="mb-24">
+      <div class="flex justify-between items-end mb-10">
+        <h2 class="text-3xl font-black text-base-content tracking-tight uppercase">Publications</h2>
+
+        <a
+          href="https://scholar.google.de/citations?user=6M7srVcAAAAJ&hl=en"
+          target="_blank"
+          class="text-xs font-black text-primary border-b-2 border-base-200 hover:border-primary transition-all pb-1 uppercase"
+        >
+          Google Scholar ↗
+        </a>
+      </div>
+
+      <div class="h-[700px] overflow-y-auto pr-6 custom-scrollbar rounded-[3rem]
+                  bg-base-100/60 border border-base-200 p-10 shadow-sm">
+        <PublicationsList elements={publications} />
+      </div>
+    </section>
+
+    <!-- Patents -->
+    <section class="mb-24">
+      <h2 class="text-xs font-black uppercase tracking-[0.4em] text-base-content/50 mb-10 flex items-center gap-4">
+        Patents <span class="h-px flex-1 bg-base-200"></span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {patents.map((patent) => (
+          <div class="p-8 rounded-[2.5rem] bg-base-200/50 border border-base-200 hover:bg-base-100 hover:shadow-xl transition-all group">
+            <div class="flex justify-between items-start mb-6">
+              <div class="text-[10px] font-mono font-bold text-primary bg-primary/10 px-3 py-1 rounded-full">
+                {patent.id}
+              </div>
+              <span class="text-[10px] font-bold text-base-content/50">{patent.time}</span>
+            </div>
+
+            <h3 class="font-bold text-base-content group-hover:text-primary text-lg leading-snug">
+              {patent.title}
+            </h3>
+            <p class="text-[11px] text-base-content/50 mt-4 leading-relaxed">{patent.authors}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-20 mb-24 border-t border-base-200 pt-16">
+      <section>
+        <h2 class="text-3xl font-black text-base-content mb-12 uppercase tracking-tighter">Experience</h2>
+        <CvTimeline elements={orderedExperiences} colored={true} />
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-black text-base-content mb-12 uppercase tracking-tighter">Education</h2>
+        <CvTimeline elements={orderedEducation} colored={true} />
+      </section>
+    </div>
+  </div>
 </Layout>
+
+<style is:global>
+  /* Theme-aware custom scrollbar (no Tailwind @apply) */
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.25);
+    border-radius: 999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p) / 0.6);
+  }
+</style>

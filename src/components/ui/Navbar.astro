@@ -1,52 +1,130 @@
 ---
 import { Image } from 'astro:assets'
-import {profile} from '../../settings'
+import { profile } from '../../settings'
 import SocialIcons from './SocialIcons.astro'
 import ProfilePictures from '@/assets/profile_pictures.jpg'
-import { getCollection } from 'astro:content'
 import { template } from '@/settings'
 
-const isBlogPopulated = await getCollection('blog').then(collection => collection.length > 0)
+import TalkPanels from '@/components/ui/TalkPanels.astro'
+import { talks } from '@/data/talks'
 
-const {fullName, title} = profile
+const { fullName, title, institute } = profile
 ---
+
 <aside
-	class='px-4 pt-4 h-screen w-[20rem] bg-base-200 text-base-content flex flex-col'
+  id="sidebar"
+  class="sidebar h-screen w-[20rem] px-5 pt-6 pb-5 bg-base-200 text-base-content flex flex-col border-r border-base-300"
 >
-	<div class='flex flex-col my-8 justify-between h-full'>
-		<div>
-			<div class='flex justify-center items-center flex-col'>
-				<Image
-					class='mask mask-circle size-44'
-					src={ProfilePictures}
-					alt={`Profile picture of ${fullName}`}
-				/>
-				<h1 class="text-lg font-black mt-8 hidden lg:block">{title} <span>{fullName}</span></h1>
-			</div>
-			<div class='mx-4 mt-16'>
-				<ul class='space-y-4 menu grow shrink menu-md overflow-y-auto'>
-					<li>
-                        <a href={`${template.base}/`} class='text-lg'>Home</a>
-					</li>
-					<li>
-                        <a href={`${template.base}/research`} class='text-lg'>Research</a>
-					</li>
-					<li>
-                        <a href={`${template.base}/papers`} class='text-lg'>Papers</a>
-					</li>
-					<li>
-                        <a href={`${template.base}/cv`} class='text-lg'>CV</a>
-                    </li>
-                    {isBlogPopulated &&
-					<li>
-                        <a href={`${template.base}/blog/1`} class='text-lg'>Blog</a>
-</li>
-                    }
-				</ul>
-			</div>
-		</div>
-		<div class='mx-4'>
-			<SocialIcons/>
-		</div>
-	</div>
+  <!-- Collapse logic (desktop only) -->
+  <script is:inline>
+    (() => {
+      const KEY = "sidebarCollapsed";
+      const sidebar = document.getElementById("sidebar");
+      const btn = document.getElementById("sidebarToggle");
+      if (!sidebar || !btn) return;
+
+      const apply = (collapsed) => {
+        sidebar.classList.toggle("sidebar-collapsed", collapsed);
+        btn.setAttribute("aria-expanded", String(!collapsed));
+      };
+
+      apply(localStorage.getItem(KEY) === "true");
+
+      btn.addEventListener("click", () => {
+        const next = !sidebar.classList.contains("sidebar-collapsed");
+        localStorage.setItem(KEY, next ? "true" : "false");
+        apply(next);
+      });
+    })();
+  </script>
+
+  <!-- Top: identity -->
+  <div class="flex items-start justify-between gap-3">
+    <a href={`${template.base}/`} class="flex items-center gap-4 min-w-0">
+      <Image
+        class="mask mask-circle size-12 ring-1 ring-base-300 shrink-0"
+        src={ProfilePictures}
+        alt={`Profile picture of ${fullName}`}
+      />
+
+      <div class="identity leading-tight min-w-0 hidden lg:block">
+        <div class="text-lg font-extrabold tracking-tight text-base-content truncate">
+          {fullName}
+        </div>
+        <div class="text-sm font-medium text-base-content/60 truncate">
+          {title}
+        </div>
+        {institute && (
+          <div class="text-sm text-base-content/55 truncate">
+            {institute}
+          </div>
+        )}
+      </div>
+    </a>
+
+    <!-- Collapse toggle -->
+    <button
+      id="sidebarToggle"
+      type="button"
+      class="btn btn-ghost btn-sm btn-square rounded-xl hidden lg:inline-flex
+             text-base-content/60 hover:text-base-content hover:bg-base-100"
+      aria-label="Toggle sidebar"
+      title="Toggle sidebar"
+      aria-expanded="true"
+    >
+      <svg
+        class="chev w-5 h-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Main: gif-style panels -->
+  <div class="mt-8 flex-1 flex flex-col">
+    <TalkPanels
+      title="Talks & Highlights"
+      items={talks}
+      limit={6}
+      maxHeightClass="max-h-[28rem]"
+    />
+
+    <!-- Bottom: socials -->
+    <div class="mt-auto pt-6">
+      <div class="divider h-px bg-base-300 mb-5"></div>
+      <div class="socialwrap">
+        <SocialIcons />
+      </div>
+    </div>
+  </div>
 </aside>
+
+<style>
+  /* Single-sidebar collapse (no duplicate drawer) */
+  .sidebar {
+    transition: width 250ms ease, padding 250ms ease;
+    overflow: hidden;
+  }
+  .sidebar.sidebar-collapsed {
+    width: 5.25rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* When collapsed: hide text/panels, keep icons usable */
+  .sidebar.sidebar-collapsed .identity,
+  .sidebar.sidebar-collapsed .divider,
+  .sidebar.sidebar-collapsed .socialwrap {
+    display: none;
+  }
+
+  /* Chevron rotation */
+  .sidebar .chev { transition: transform 250ms ease; }
+  .sidebar.sidebar-collapsed .chev { transform: rotate(180deg); }
+</style>

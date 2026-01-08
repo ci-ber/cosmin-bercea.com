@@ -3,41 +3,45 @@ import astroLogo from '../assets/astro.svg'
 import background from '../assets/background.svg'
 ---
 
-<div>
-	<h1 class='text-3xl font-bold mb-8'>Hello There!</h1>
-	<p class='mb-6 text-lg'>
-		Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, animi
-		voluptates sint consectetur repellat veniam aut deleniti vero aliquam odit
-		aspernatur architecto odio quae nam perferendis, tempora nostrum ea nemo.
-		Ducimus, eum voluptatum deleniti explicabo soluta accusamus quasi?
-		Aspernatur deleniti quasi adipisci facere esse aliquid numquam minima maxime
-		similique sint ea dolorum sit magnam ipsam optio soluta, aut nulla?
-		Doloremque. Similique laboriosam, corporis error aperiam sint, eum
-		consequuntur tempora vitae excepturi saepe perferendis autem ea. Eos,
-		aliquam esse? A veritatis vitae error rerum tempora molestiae non, nulla
-		quis blanditiis maiores? Repellendus blanditiis laborum officiis in
-		consectetur reprehenderit sunt deserunt dignissimos nihil facilis. Mollitia
-		consectetur quod illum placeat cum sequi fugit consequuntur repellendus
-		veniam, officiis laboriosam soluta recusandae dolore dolores? Autem. Omnis,
-		nulla ut. Ad eius maxime quia amet omnis qui, inventore obcaecati cupiditate
-		ab iusto impedit quae officiis facere quas aspernatur. Expedita voluptatem
-		ipsum perferendis nam nostrum voluptates cupiditate amet? Dicta saepe enim
-		reprehenderit. A dolor culpa iure cum incidunt iusto itaque inventore,
-		architecto ab, cupiditate qui rerum? Maxime illo doloribus numquam soluta
-		suscipit enim velit quo est maiores ipsam?
-	</p>
-	<p class='mb-6 text-lg'>
-		Dolores, laudantium nostrum! Dolore vitae provident, quae voluptas tempore
-		architecto quisquam ab fuga eaque vel enim eum unde facere nobis? Qui sunt,
-		beatae at aliquam voluptatem a dignissimos asperiores id! Vitae repellendus
-		deleniti pariatur aut alias corporis recusandae obcaecati, possimus dolorum
-		delectus omnis fuga enim modi reiciendis eveniet natus voluptates aspernatur
-		voluptate ex! Quaerat nam natus beatae similique, tempora ut. Cum suscipit
-		rerum recusandae laborum ab ratione autem maiores sunt? Autem repellendus
-		consectetur, commodi beatae unde ut ipsa aliquid deleniti perferendis
-		excepturi fugiat nesciunt similique iure recusandae et? Quo, porro.
-		Consequuntur, laudantium sit quia dignissimos sint totam corporis nemo
-		fugiat eum repellat impedit officia odit. Nihil laboriosam sequi id porro.
-		Autem at vero atque eaque perferendis suscipit ducimus distinctio eligendi!
-	</p>
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <header class="mb-16">
+        <h1 class='text-5xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600'>
+            Hello, I'm Cosmin.
+        </h1>
+        <p class='text-xl text-slate-600 max-w-2xl leading-relaxed'>
+            PhD Researcher at [University] specializing in AI and Medical Imaging. 
+            Building the future of computer vision.
+        </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <a href="/publications" class="group relative p-8 rounded-2xl border border-slate-200 bg-white hover:border-blue-500 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
+            <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-50 rounded-full scale-0 group-hover:scale-150 transition-transform duration-500 ease-in-out opacity-50"></div>
+            
+            <div class="relative mb-4 text-slate-400 group-hover:text-blue-600 group-hover:rotate-3 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
+            </div>
+            
+            <h3 class="relative text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Publications</h3>
+            <p class="relative text-slate-500 text-sm">30+ peer-reviewed papers in CVPR, ICCV, and NeurIPS.</p>
+        </a>
+
+        <a href="/projects" class="group p-8 rounded-2xl border border-slate-200 bg-white hover:border-purple-500 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <div class="mb-4 text-slate-400 group-hover:text-purple-600 group-hover:scale-110 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 22 4-10 4 10"/><path d="M12 18H9"/></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 group-hover:text-purple-600 transition-colors">Research</h3>
+            <p class="text-slate-500 text-sm">Exploring generative models for high-resolution synthesis.</p>
+        </a>
+
+        <a href="/cv.pdf" class="group p-8 rounded-2xl border border-slate-200 bg-white hover:border-emerald-500 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
+            <div class="mb-4 text-slate-400 group-hover:text-emerald-600 group-hover:rotate-12 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 group-hover:text-emerald-600 transition-colors">Curriculum Vitae</h3>
+            <p class="text-slate-500 text-sm">Download my full academic history and industry experience.</p>
+        </a>
+
+    </div>
 </div>

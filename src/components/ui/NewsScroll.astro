@@ -1,0 +1,168 @@
+---
+import { news } from "@/data/news";
+
+interface Props {
+  title?: string;
+  maxHeightClass?: string;
+  limit?: number;
+}
+
+const {
+  title = "Recent",
+  maxHeightClass = "max-h-[32rem]",
+  limit = 50,
+} = Astro.props as Props;
+
+const items = [...news]
+  .sort((a, b) => {
+    if (Boolean(a.pinned) !== Boolean(b.pinned)) return a.pinned ? -1 : 1;
+    return String(b.date).localeCompare(String(a.date));
+  })
+  .slice(0, limit);
+
+const fmt = (dateStr: string) => {
+  const safe = dateStr.length === 7 ? `${dateStr}-01` : dateStr;
+  const d = new Date(safe);
+  if (Number.isNaN(d.getTime())) return dateStr;
+  return new Intl.DateTimeFormat("en", { year: "numeric", month: "short" }).format(d);
+};
+
+const noteClass = (note?: string) => {
+  if (!note) return "badge badge-outline border-base-300 text-base-content/70";
+  const n = note.toLowerCase();
+  if (n.includes("best paper")) return "badge badge-primary font-bold";
+  if (n.includes("oral")) return "badge badge-secondary font-bold";
+  if (n.includes("early")) return "badge badge-outline border-primary/40 text-primary font-semibold";
+  return "badge badge-outline border-base-300 text-base-content/70";
+};
+
+const chipClass =
+  "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold " +
+  "bg-base-200/80 text-base-content border border-base-300/30 " +
+  "hover:bg-base-200 transition-colors";
+---
+
+<section aria-label={title} class="rounded-2xl border border-base-300 bg-base-100/60 backdrop-blur">
+  <div class="px-6 pt-6 pb-4 flex items-end justify-between gap-4">
+    <div>
+      <div class="text-xs font-black uppercase tracking-[0.32em] text-base-content/50">
+        {title}
+      </div>
+      <div class="mt-2 text-sm text-base-content/70">
+        Papers, awards, journals, and milestones.
+      </div>
+    </div>
+  </div>
+
+  <div class={`px-2 pb-4 ${maxHeightClass} overflow-y-auto news-scroll`}>
+    <ul class="divide-y divide-base-300/70">
+      {items.map((it) => {
+        const hasRowLink = Boolean(it.href);
+        const RowWrapper: any = hasRowLink ? "a" : "div";
+
+        const rowProps = hasRowLink
+          ? {
+              href: it.href,
+              class: "group block py-4 rounded-xl transition-colors hover:bg-base-100 px-3",
+              title: it.title,
+              target: it.href?.startsWith("http") ? "_blank" : undefined,
+              rel: it.href?.startsWith("http") ? "noreferrer" : undefined,
+            }
+          : {
+              class: "block py-4 px-3",
+            };
+
+        return (
+          <li class="px-4">
+            <RowWrapper {...rowProps}>
+              <div class="flex items-start justify-between gap-4">
+                <div class="min-w-0">
+                  {/* Top row */}
+                  <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="badge badge-outline border-base-300 text-base-content/70 font-semibold">
+                      {it.kind}
+                    </span>
+
+                    {/* note = always badge, no special cases */}
+                    {it.note && <span class={noteClass(it.note)}>{it.note}</span>}
+
+                    <span class="text-xs font-semibold text-base-content/50">
+                      {it.venue}
+                    </span>
+
+                    {/* Action chips (Paper/Code/Dataset) */}
+                    {Array.isArray((it as any).links) && (it as any).links.length > 0 && (
+                      <span class="ml-1 flex flex-wrap items-center gap-2">
+                        {(it as any).links.map((l: any) => (
+                          <a
+                            href={l.href}
+                            class={chipClass}
+                            target={String(l.href).startsWith("http") ? "_blank" : undefined}
+                            rel={String(l.href).startsWith("http") ? "noreferrer" : undefined}
+                            onClick={(e) => {
+                              // prevent row link hijack
+                              e.preventDefault();
+                              e.stopPropagation();
+                              window.open(l.href, String(l.href).startsWith("http") ? "_blank" : "_self");
+                            }}
+                          >
+                            {l.label}
+                            <span class="opacity-70">↗</span>
+                          </a>
+                        ))}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <div class="text-base font-semibold tracking-tight text-base-content group-hover:text-primary transition-colors">
+                    {it.title}
+                  </div>
+
+                  {/* Optional author line (explicit only) */}
+                  {it.by && (
+                    <div class="mt-1 text-sm text-base-content/70">
+                      <span class="text-base-content/60">by </span>
+                      <span class="font-medium text-base-content/80">{it.by}</span>
+                    </div>
+                  )}
+
+                  {/* Optional description line (explicit only) */}
+                  {(it as any).desc && (
+                    <div class="mt-1 text-sm text-base-content/70">
+                      {(it as any).desc}
+                    </div>
+                  )}
+                </div>
+
+                {/* Date */}
+                <div class="shrink-0 text-sm text-base-content/50 font-medium pt-1">
+                  {fmt(it.date)}
+                </div>
+              </div>
+            </RowWrapper>
+          </li>
+        );
+      })}
+
+      {items.length === 0 && (
+        <li class="px-6 py-8 text-sm text-base-content/70">
+          No updates yet. Add entries in{" "}
+          <code class="px-1 py-0.5 rounded bg-base-200">src/data/news.ts</code>.
+        </li>
+      )}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .news-scroll::-webkit-scrollbar { width: 6px; }
+  .news-scroll::-webkit-scrollbar-track { background: transparent; }
+  .news-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.22);
+    border-radius: 999px;
+  }
+  .news-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p) / 0.55);
+  }
+</style>

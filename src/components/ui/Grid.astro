@@ -3,18 +3,111 @@ interface Props {
   gridTitle: string;
   gridItems: {
     title: string;
-    description: string;
+    description?: string;
+    color?: string;
+    link?: string;
   }[];
+
+  /** New: compact sidebar mode */
+  compact?: boolean;
+
+  /** New: height limit for compact mode */
+  maxHeightClass?: string;
 }
 
-const {gridTitle, gridItems} = Astro.props;
+const {
+  gridTitle,
+  gridItems,
+  compact = false,
+  maxHeightClass = "max-h-64", // shows fewer items; still scrollable
+} = Astro.props as Props;
+
+// Map your settings colors to DaisyUI semantic tokens
+const colorMap: Record<string, { dot: string; hoverText: string; hoverBorder: string }> = {
+  blue:    { dot: "bg-primary",   hoverText: "hover:text-primary",   hoverBorder: "hover:border-primary/40" },
+  purple:  { dot: "bg-secondary", hoverText: "hover:text-secondary", hoverBorder: "hover:border-secondary/40" },
+  emerald: { dot: "bg-success",   hoverText: "hover:text-success",   hoverBorder: "hover:border-success/40" },
+  amber:   { dot: "bg-warning",   hoverText: "hover:text-warning",   hoverBorder: "hover:border-warning/40" },
+  rose:    { dot: "bg-error",     hoverText: "hover:text-error",     hoverBorder: "hover:border-error/40" },
+};
+
+const getC = (color?: string) => colorMap[color || "blue"] ?? colorMap.blue;
 ---
-<h2 class="text-3xl font-bold mb-8">{gridTitle}</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {gridItems.map((item) => (
-    <div class="p-6 rounded-lg text-base-content bg-base-200">
-      <h3 class="text-xl font-semibold mb-3">{item.title}</h3>
-      <p>{item.description}</p>
+
+{compact ? (
+  <section class="rounded-2xl border border-base-300 bg-base-100/60 backdrop-blur">
+    <div class="px-5 pt-5 pb-3">
+      <h2 class="text-xs font-black uppercase tracking-[0.32em] text-base-content/50">
+        {gridTitle}
+      </h2>
     </div>
-  ))}
-</div>
+
+    <div class={`px-2 pb-4 ${maxHeightClass} overflow-y-auto research-scroll`}>
+      <ul class="space-y-1 px-2">
+        {gridItems.map((item) => {
+          const c = getC(item.color);
+
+          return (
+            <li>
+              <a
+                href={item.link || "#"}
+                class={`group flex items-center gap-3 rounded-xl border border-transparent
+                        px-3 py-2.5 transition-all
+                        text-base-content/70 hover:text-base-content hover:bg-base-100 ${c.hoverBorder}`}
+                title={item.title}
+              >
+                <span class={`h-2.5 w-2.5 rounded-full ${c.dot} opacity-70 group-hover:opacity-100 transition-opacity`} />
+                <span class={`text-sm font-semibold tracking-tight ${c.hoverText}`}>
+                  {item.title}
+                </span>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+) : (
+  <>
+    <h2 class="text-3xl font-bold mb-8 text-base-content tracking-tight">{gridTitle}</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {gridItems.map((item) => {
+        const c = getC(item.color);
+
+        return (
+          <a
+            href={item.link || "#"}
+            class={`group relative p-8 rounded-2xl border border-base-200 bg-base-100 transition-all duration-300 ease-out
+                    hover:shadow-xl hover:-translate-y-2 ${c.hoverBorder} block`}
+          >
+            <div class="relative z-10">
+              <h3 class={`text-xl font-bold mb-3 text-base-content transition-all duration-300 group-hover:translate-x-1 ${c.hoverText}`}>
+                {item.title}
+              </h3>
+
+              {item.description && (
+                <p class="text-base-content/70 leading-relaxed text-sm">
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </>
+)}
+
+<style>
+  /* Subtle, theme-aware scrollbar */
+  .research-scroll::-webkit-scrollbar { width: 6px; }
+  .research-scroll::-webkit-scrollbar-track { background: transparent; }
+  .research-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--bc) / 0.22);
+    border-radius: 999px;
+  }
+  .research-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--p) / 0.55);
+  }
+</style>
