@@ -32,15 +32,16 @@ const {
         const stored = typeof localStorage !== "undefined" ? localStorage.getItem("theme") : null;
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-        const theme = stored || (prefersDark ? "dark" : "light");
+        const theme = stored || (prefersDark ? "cosmin-dark" : "cosmin");
 
         // DaisyUI source of truth
         document.documentElement.setAttribute("data-theme", theme);
 
         // Optional compatibility if you still use Tailwind `dark:` anywhere
-        document.documentElement.classList.toggle("dark", theme === "dark");
+        document.documentElement.classList.toggle("cosmin-dark", theme === "cosmin-dark");
       })();
     </script>
+
   </head>
 
   <body class="min-h-screen">
