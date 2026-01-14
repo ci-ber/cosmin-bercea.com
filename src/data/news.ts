@@ -20,7 +20,7 @@ export const news: NewsItem[] = [
     kind: "Milestone",
     venue: "MICCAI Student Board",
     title: "Elected as Vice President Academic and Scientific",
-    desc: "The MSB is dedicated to connecting the global community of students in medical imaging. Check our projects for MICCAI 2026 in Abu Dhabi and our call for new members to join the team!",
+    desc: "The MSB is dedicated to representing the global community of students in medical imaging. Check our projects for MICCAI 2026 in Abu Dhabi and our call for new members to join the team!",
     href: "https://miccai-sb.github.io/",
   },
   {
