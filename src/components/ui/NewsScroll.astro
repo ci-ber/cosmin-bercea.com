@@ -127,11 +127,13 @@ const chipClass =
                     </div>
                   )}
 
-                  {/* Optional description line (explicit only) */}
+                 {/* Optional description line (explicit only) */}
                   {(it as any).desc && (
-                    <div class="mt-1 text-sm text-base-content/70">
-                      {(it as any).desc}
-                    </div>
+                    <div 
+                      class="mt-1 text-sm text-base-content/70" 
+                      set:html={(it as any).desc}
+                      onclick="event.stopPropagation()" 
+                    />
                   )}
                 </div>
 
