@@ -2,8 +2,15 @@ import type { Experience, Education, Publication, Skill, Award, Service, Teachin
 
 export const experiences: Experience[] = [
     {
+        company: 'TUM University Hospital (Klinikum rechts der Isar)',
+        time: '2026 - present',
+        title: 'Senior Postdoctoral Researcher',
+        location: 'Munich, Germany',
+        description: 'Research on normative and generative learning and digital twins in healthcare. Co-coordinator of TWIN-X, a Horizon Europe project.',
+    },
+    {
         company: 'Technical University of Munich (TUM)',
-        time: '2024 - present',
+        time: '2024 - 2026',
         title: 'Postdoctoral Researcher',
         location: 'Munich, Germany',
         description: 'Leading research on Generative AI and Multimodal Learning for medical image analysis to identify rare and early-stage diseases.',

@@ -1,7 +1,7 @@
 export const profile = {
     fullName: 'Cosmin I. Bercea',
-    title: 'Postdoctoral Researcher in Generative AI & Medical Imaging',
-    institute: 'Technical University of Munich (TUM)',
+    title: 'Senior Postdoctoral Researcher in Generative AI & Medical Imaging',
+    institute: 'TUM University Hospital (Klinikum rechts der Isar)',
     author_name: 'Cosmin I. Bercea', // This will highlight your name in your publication list
     research_areas: [
         { 

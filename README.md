@@ -1,106 +1,54 @@
-# Astro Academia Documentation
+# cosmin-bercea.com
 
-## What is Astro Academia?
+Personal academic website of **Dr. Cosmin I. Bercea** — Postdoctoral Researcher in
+Generative AI & Medical Imaging at the Technical University of Munich (TUM).
 
-Astro Academia is a personal academic website built using Astro, a modern static site generator. The website is designed to showcase academic achievements, research papers, blog posts, and a CV. It is fast, responsive, and easy to maintain, making it an ideal platform for academics and researchers to present their work.
+The site showcases research areas, publications, CV, talks, and news. It is a static
+site built with [Astro](https://astro.build), styled with Tailwind CSS + DaisyUI, and
+deployed to GitHub Pages.
 
-If you find Astro Academia useful or appreciate my work, consider supporting me! Your support helps keep this project maintained and encourages further development. 🚀✨
+🔗 Live: https://cosmin-bercea.com
 
-<a href="https://buymeacoffee.com/maiobarbero" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-yellow.png" alt="Buy Me A Coffee" height="41" width="174"></a>
-<a href="https://www.producthunt.com/products/astro-academia?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-astro&#0045;academia" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1026976&theme=light&t=1760776422941" alt="Astro&#0032;Academia - Academic&#0032;website&#0032;template | Product Hunt" style="width: 189px; height: 41px;" width="189" height="41" /></a>
+## Tech stack
 
-### Demo
-You can see Astro Academia at the following link: <a href="https://maiobarbero.github.io/astro_academia/" target="_blank">demo page</a>
+- **Astro** — static site generator
+- **Tailwind CSS + DaisyUI** — styling and theming (light `cosmin` / dark `cosmin-dark`)
+- **React** — interactive islands where needed
+- Sitemap + RSS generation
 
-## How to use it
+## Local development
 
-Fork this repository to create your new website starting from this template.
+Requires the Node version pinned in [`.nvmrc`](.nvmrc).
 
-## How to Create a CV Using the `cv.ts` File
-
-The `cv.ts` file located in the `src/data/` directory is used to define the structure and content of your CV. This file exports an object containing various sections of your CV, such as education, experience, publications, and more.
-
-### Example Structure of `cv.ts`
-
-```typescript
-export const cv = {
-  education: [
-    {
-      degree: "Ph.D. in Computer Science",
-      institution: "University of Example",
-      year: "2020",
-    },
-    {
-      degree: "M.Sc. in Computer Science",
-      institution: "University of Example",
-      year: "2016",
-    },
-  ],
-  experience: [
-    {
-      title: "Research Scientist",
-      company: "Example Research Lab",
-      year: "2021-Present",
-    },
-    {
-      title: "Software Engineer",
-      company: "Tech Company",
-      year: "2016-2021",
-    },
-  ],
-  // Add more sections as needed
-};
+```bash
+npm install      # install dependencies
+npm run dev      # start the dev server (http://localhost:4321)
+npm run build    # build the production site to ./dist
+npm run preview  # preview the production build locally
 ```
 
-To create or update your CV, modify the `cv.ts` file with your personal information and achievements. The CV will be automatically rendered on the CV page of your website.
+## Where the content lives
 
-## How to Use the `settings.ts` File
+All site content is data-driven — edit these files, no component changes needed:
 
-The `settings.ts` file located in the `src/` directory is used to configure various settings for your Astro Academia website. This file exports an object containing settings such as site title, description, social media links, and more.
+| What | File |
+| --- | --- |
+| Name, title, research areas, social links, SEO | [`src/settings.ts`](src/settings.ts) |
+| Experience, education, publications, awards, etc. | [`src/data/cv.ts`](src/data/cv.ts) |
+| Research detail pages | [`src/data/research.ts`](src/data/research.ts) |
+| News / updates feed | [`src/data/news.ts`](src/data/news.ts) |
+| Talks | [`src/data/talks.ts`](src/data/talks.ts) |
+| Selected contributions | [`src/data/contributions.ts`](src/data/contributions.ts) |
+| Blog posts | [`src/content/BlogPosts/*.md`](src/content/BlogPosts) |
+| Legal notice | [`src/pages/impressum.astro`](src/pages/impressum.astro) |
 
-### Example Structure of `settings.ts`
+## Deployment
 
-```typescript
-export const settings = {
-  siteTitle: "Astro Academia",
-  siteDescription: "A personal academic website built with Astro.",
-  socialLinks: {
-    twitter: "https://twitter.com/yourusername",
-    github: "https://github.com/yourusername",
-    linkedin: "https://linkedin.com/in/yourusername",
-  },
-  // Add more settings as needed
-};
-```
+Pushing to the default branch triggers the GitHub Actions workflow in
+[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the site
+and deploys it to GitHub Pages.
 
-To customize your website settings, modify the `settings.ts` file with your desired values. These settings will be used throughout your website to display the appropriate information.
+## Credits
 
-## Where to Find the Blog Collection and Where to Add New Blog Posts
-
-The blog collection is located in the `src/content/BlogPosts/` directory. Each blog post is a Markdown file with a `.md` extension. The blog posts are named sequentially (e.g., `post1.md`, `post2.md`, etc.).
-
-### Adding a New Blog Post
-
-1. Navigate to the `src/content/BlogPosts/` directory.
-2. Create a new Markdown file for your blog post (e.g., `post1.md`).
-3. Add the content of your blog post using Markdown syntax. Include frontmatter at the top of the file to define metadata such as title, date, and tags.
-
-### Example Blog Post (`post11.md`)
-
-```markdown
----
-title: "New Blog Post"
-date: "2023-10-01"
-tags: ["research", "astro"]
-excerpt: "Some short paragraphs"
----
-
-# New Blog Post
-
-This is the content of the new blog post. Write your article here using Markdown syntax.
-```
-
-Once you have added the new blog post, it will be automatically included in the blog collection and displayed on the blog page of your website.
-
-## Deploy
-The template provides a workflow to deploy the website on Github pages as a static website.
+Built on the [Astro Academia](https://github.com/maiobarbero/astro_academia) template
+by Matteo Barbero, with substantial customization.

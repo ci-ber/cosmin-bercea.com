@@ -16,6 +16,13 @@ export type NewsItem = {
 
 export const news: NewsItem[] = [
   {
+    date: "2026-06",
+    kind: "Milestone",
+    venue: "TUM University Hospital",
+    title: "Started a new position as Senior Postdoctoral Researcher",
+    desc: "Joined the Klinikum rechts der Isar (TUM University Hospital) to lead research on normative and generative learning and digital twins in healthcare, and to co-coordinate TWIN-X, a Horizon Europe project.",
+  },
+  {
     date: "2026-01",
     kind: "Milestone",
     venue: "MICCAI Student Board",

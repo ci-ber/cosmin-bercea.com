@@ -40,7 +40,7 @@ const { fullName, title, institute } = profile
 
   <!-- Top: identity -->
   <div class="flex items-start justify-between gap-3">
-    <a href={`${template.base}/`} class="flex items-center gap-4 min-w-0">
+    <a href={import.meta.env.BASE_URL} class="flex items-center gap-4 min-w-0">
       <Image
         class="mask mask-circle size-12 ring-1 ring-base-300 shrink-0"
         src={ProfilePictures}
